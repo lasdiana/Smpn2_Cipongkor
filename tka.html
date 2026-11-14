@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Latihan Mandiri TKA Bahasa Indonesia</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f4f8; margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 850px; background: #fff; padding: 30px; margin: auto; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+        h2 { color: #1e3a8a; text-align: center; margin-bottom: 5px; }
+        p.subtitle { text-align: center; color: #64748b; margin-top: 0; margin-bottom: 25px; }
+        
+        .card-menu { background: #f8fafc; border: 1px solid #cbd5e1; padding: 25px; border-radius: 8px; margin-bottom: 20px; text-align: center; }
+        .input-group { margin-bottom: 18px; text-align: left; max-width: 450px; margin-left: auto; margin-right: auto; }
+        .input-group label { display: block; font-weight: bold; margin-bottom: 6px; color: #334155; }
+        .input-group input, .input-group select { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 15px; background: #fff; cursor: pointer; }
+        
+        .btn-paket { background-color: #2563eb; color: white; border: none; padding: 14px 20px; font-size: 16px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; max-width: 450px; margin-top: 10px; }
+        .btn-paket:hover { background-color: #1d4ed8; }
+
+        .hidden { display: none !important; }
+        
+        .question-box { margin-bottom: 25px; border: 1px solid #e2e8f0; border-radius: 8px; padding: 18px; background: #fafafa; }
+        .question { font-weight: bold; margin-bottom: 12px; color: #1e293b; font-size: 16px; }
+        .options label { display: block; margin-bottom: 8px; cursor: pointer; padding: 8px 10px; border-radius: 6px; }
+        .options label:hover { background: #e2e8f0; }
+        input[type="radio"] { margin-right: 10px; }
+        
+        button.submit-btn { background-color: #25d366; color: white; border: none; padding: 14px 20px; font-size: 16px; border-radius: 8px; cursor: pointer; width: 100%; font-weight: bold; margin-bottom: 15px; }
+        button.submit-btn:hover { background-color: #20ba5a; }
+        
+        #result { margin-top: 25px; padding: 15px; border-radius: 8px; font-size: 18px; font-weight: bold; text-align: center; display: none; margin-bottom: 15px; }
+        .correct-score { color: #166534; background-color: #dcfce7; border: 1px solid #bbf7d0; }
+        .incorrect-score { color: #991b1b; background-color: #fee2e2; border: 1px solid #fecaca; }
+        .explanation { font-size: 14px; color: #1e40af; margin-top: 10px; background-color: #eff6ff; border: 1px solid #bfdbfe; border-radius: 6px; padding: 10px 12px; display: none; }
+        .user-correct { background-color: #dcfce7 !important; border: 1px solid #86efac; }
+        .user-wrong { background-color: #fee2e2 !important; border: 1px solid #fca5a5; }
+        
+        .student-info { background: #e0f2fe; padding: 10px 15px; border-radius: 6px; margin-bottom: 20px; color: #0369a1; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
+        .back-btn { background: #64748b; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 13px; }
+        .badge-kognitif { display: inline-block; background: #e2e8f0; color: #334155; font-size: 12px; padding: 3px 8px; border-radius: 4px; margin-bottom: 6px; font-weight: bold; }
+        .text-stimulus { background: #f1f5f9; border-left: 4px solid #3b82f6; padding: 12px; margin-bottom: 15px; font-size: 14px; color: #334155; font-style: italic; border-radius: 0 6px 6px 0; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Portal Latihan Mandiri TKA</h2>
+    <p class="subtitle">Mata Pelajaran Bahasa Indonesia - Kelas 9</p>
+
+    <!-- HALAMAN LOGIN -->
+    <div id="loginSection" class="card-menu">
+        <h3>Silakan Masukkan Data Diri</h3>
+        <div class="input-group">
+  <label for="kelasSiswa">Pilih Kelas:</label>
+  <select id="kelasSiswa" onchange="resetNamaTKA()">
+    <option value="">-- Pilih Kelas --</option>
+    <option value="9A">Kelas 9A</option>
+    <option value="9B">Kelas 9B</option>
+    <option value="9C">Kelas 9C</option>
+    <option value="9D">Kelas 9D</option>
+    <option value="9E">Kelas 9E</option>
+    <option value="9F">Kelas 9F</option>
+  </select>
+</div>
+<div class="input-group">
+  <label for="namaSiswa">Nama Lengkap Siswa:</label>
+  <input type="text" id="namaSiswa" placeholder="Ketik 2 huruf namamu..." oninput="cariSiswaTKA()" autocomplete="off">
+  <div id="saranTKA" style="border:1px solid #cbd5e1;border-radius:6px;max-height:200px;overflow:auto;background:white;display:none;text-align:left;margin-top:5px"></div>
+  <p style="font-size:12px;color:#64748b;margin-top:5px">* Pilih kelas dulu, lalu ketik namamu, klik nama yang muncul.</p>
+</div>
+        <div class="input-group">
+            <label for="pilihPaket">Pilih Paket Soal Tryout:</label>
+            <select id="pilihPaket">
+                <option value="1">Paket 1 (10 Soal - Pantai Batu Banua & Infografik KIA)</option>
+                <option value="2">Paket 2 (10 Soal - Keindahan Alam & Piring Sehat)</option>
+                <option value="3">Paket 3 (10 Soal - Penumpang Bus Kota & Iklan)</option>
+                <option value="4">Paket 4 (10 Soal - Kupu-Kupu & Puisi Guru)</option>
+                <option value="5">Paket 5 (30 Soal - Tekstual, Inferensial, Evaluasi & Apresiasi)</option>
+                <option value="6">TRYOUT 1 (30 Soal - Tekstual, Inferensial, Evaluasi & Apresiasi)</option>
+                <option value="7">TRYOUT 2 (30 Soal - Tekstual, Inferensial, Evaluasi & Apresiasi)</option>
+            </select>
+        </div>
+        <button type="button" class="btn-paket" onclick="mulaiUjian()">Mulai Latihan / Tryout</button>
+    </div>
+
+    <!-- HALAMAN SOAL UTAMA -->
+    <div id="quizSection" class="hidden">
+        <div class="student-info">
+            <span id="displayInfo"></span>
+            <button type="button" class="back-btn" onclick="keluarKeMenu()">Ganti Paket</button>
+        </div>
+
+        <form id="quizForm">
+            <div id="containerSoal"></div>
+            <button type="button" class="submit-btn" onclick="checkAndSendWA()">✅ Kirim Jawaban & Langsung ke WhatsApp Guru</button>
+        </form>
+
+        <div id="result"></div>
+    </div>
+</div>
+
+<script>
+const bankSoal = {
+    "1": [
+        { q: "1. Berdasarkan teks 'Pantai Batu Banua', deskripsi utama yang dibahas berkaitan dengan...", opts: { A: "Sejarah perkembangan kawasan Patra", B: "Biaya masuk objek wisata pantai", C: "Lokasi geografis dan aksesibilitas Pantai Batu Banua", D: "Fasilitas dan aktivitas menyelam" }, key: "C", exp: "Pembahasan: Teks secara rinci mengulas letak geografis dan rute akses menuju lokasi pantai." },
+        { q: "2. Berdasarkan informasi Kartu Identitas Anak (KIA), berapa batas usia anak yang wajib memiliki KIA?", opts: { A: "5 tahun ke bawah", B: "12 tahun ke bawah", C: "17 tahun ke bawah", D: "21 tahun ke bawah" }, key: "C", exp: "Pembahasan: Sesuai infografik KIA, kartu ini diperuntukkan bagi anak usia di bawah 17 tahun." },
+        { q: "3. Apa arti kata 'rutin' dalam panduan kesehatan mata atau teks terkait?", opts: { A: "Sekali waktu", B: "Jarang dilakukan", C: "Teratur atau berkala", D: "Tanpa henti" }, key: "C", exp: "Pembahasan: Kata 'rutin' bermakna dikerjakan secara teratur atau berkala sesuai jadwal." },
+        { q: "4. Pada pantun edukasi, struktur sampiran umumnya terletak pada...", opts: { A: "Baris 1 dan 2", B: "Baris 3 dan 4", C: "Seluruh baris", D: "Baris akhir" }, key: "A", exp: "Pembahasan: Baris pertama dan kedua pada pantun berfungsi sebagai sampiran." },
+        { q: "5. Apa unsur intrinsik utama yang sering menonjol dalam cerita fabel (hewan)?", opts: { A: "Latar tempat luar angkasa", B: "Tokoh hewan berkarakter manusia dan pesan moral", C: "Data statistik ilmiah", D: "Kutipan ayat suci" }, key: "B", exp: "Pembahasan: Fabel menggunakan tokoh binatang yang bertingkah laku seperti manusia dengan menyisipkan pesan moral." },
+        { q: "6. Bagian struktur cerita yang mulai memunculkan masalah atau konflik antartokoh disebut...", opts: { A: "Orientasi", B: "Komplikasi", C: "Resolusi", D: "Koda" }, key: "B", exp: "Pembahasan: Komplikasi adalah bagian awal munculnya ketegangan atau masalah dalam alur cerita." },
+        { q: "7. Manakah kalimat yang termasuk Gagasan Pokok (bukan rincian)...", opts: { A: "Kupu-kupu tersebut memiliki bentang sayap 5 cm.", B: "Madu memiliki banyak manfaat bagi kesehatan tubuh karena kandungan gizinya.", C: "Vitamin B3 pada madu sebesar 0,1 miligram.", D: "Kalsium dalam madu tercatat 5 miligram." }, key: "B", exp: "Pembahasan: Kalimat B bersifat umum sebagai ide utama." },
+        { q: "8. Majas perumpamaan yang menggunakan kata pembanding seperti 'bagai', 'seperti', atau 'laksana' disebut...", opts: { A: "Metafora", B: "Simile", C: "Personifikasi", D: "Hiperbol" }, key: "B", exp: "Pembahasan: Simile adalah majas perbandingan langsung yang memakai kata penghubung pembanding." },
+        { q: "9. Penulisan tanggal surat resmi yang benar sesuai kaidah adalah...", opts: { A: "15-05-2025", B: "15 Mei 2025", C: "jakarta: 15 Mei 2025", D: "Tgl 15 Mei '25" }, key: "B", exp: "Pembahasan: Tanggal surat resmi tidak disingkat dengan angka/tanda hubung, dan nama bulan ditulis huruf kapital awal." },
+        { q: "10. Bagian akhir surat resmi atau pidato perpisahan yang berisi ucapan terima kasih dan harapan biasanya masuk dalam struktur...", opts: { A: "Pembukaan", B: "Penutup", C: "Lampiran", D: "Tembusan" }, key: "B", exp: "Pembahasan: Ungkapan terima kasih dan harapan penutup diletakkan pada bagian penutup." }
+    ],
+    "2": [
+        { q: "1. Berdasarkan teks Keindahan Alam Indonesia, wilayah Indonesia dijuluki sebagai paru-paru dunia karena...", opts: { A: "Memiliki lautan terluas", B: "Memiliki hutan yang sangat luas dan penting", C: "Banyak gunung berapi aktif", D: "Terletak di garis khatulistiwa" }, key: "B", exp: "Pembahasan: Hutan di Indonesia sangat luas dan berperan penting sebagai paru-paru dunia." },
+        { q: "2. Berdasarkan infografik 'Piring Sehat', apa yang dianjurkan untuk mengisi setengah bagian piring?", opts: { A: "Daging merah dan lemak", B: "Buah-buahan segar dan sayuran", C: "Gorengan dan makanan cepat saji", D: "Nasi porsi ekstra" }, key: "B", exp: "Pembahasan: Porsi setengah piring dalam pedoman piring sehat diisi oleh sayur dan buah." },
+        { q: "3. Apa tujuan utama pembuatan teks prosedur (seperti resep atau cara membuat keripik)?", opts: { A: "Menceritakan kisah masa lalu", B: "Memberikan petunjuk melakukan atau membuat sesuatu secara akurat", C: "Mengkritik kebijakan pemerintah", D: "Menyajikan data opini penulis" }, key: "B", exp: "Pembahasan: Teks prosedur berfungsi memberikan panduan langkah demi langkah." },
+        { q: "4. Jenis paragraf yang gagasan utamanya terletak di awal paragraf disebut paragraf...", opts: { A: "Deduktif", B: "Induktif", C: "Campuran", D: "Ineratif" }, key: "A", exp: "Pembahasan: Paragraf deduktif menempatkan ide pokok di kalimat pertama." },
+        { q: "5. Majas yang membandingkan benda mati seolah-olah bernyawa dan berperilaku seperti manusia adalah...", opts: { A: "Simile", B: "Personifikasi", C: "Litotes", D: "Metonimia" }, key: "B", exp: "Pembahasan: Personifikasi memberikan sifat insani kepada benda mati." },
+        { q: "6. Apa makna istilah 'mengenyam' dalam konteks mengenyam pendidikan?", opts: { A: "Melihat", B: "Menjalani atau menikmati", C: "Menjual", D: "Mengakhiri" }, key: "B", exp: "Pembahasan: Mengenyam pendidikan berarti menjalani atau mengecap bangku pendidikan." },
+        { q: "7. Unsur yang tidak boleh diubah dalam penulisan ulang ringkasan teks adalah...", opts: { A: "Gaya bahasanya", B: "Ide pokok/pesan inti pengarang", C: "Jumlah kata keseluruhan", D: "Nama penerbit buku" }, key: "B", exp: "Pembahasan: Ringkasan harus mempertahankan gagasan pokok teks asli tanpa mengubah maknanya." },
+        { q: "8. Dalam ulasan novel '5 cm', pendakian Gunung Semeru oleh para tokoh digambarkan sebagai...", opts: { A: "Liburan biasa mengisi akhir pekan", B: "Simbol perjuangan dan keyakinan dalam meraih mimpi", C: "Pelanggaran aturan pendakian", D: "Kegiatan komersial semata" }, key: "B", exp: "Pembahasan: Perjalanan mendaki puncak Semeru merepresentasikan perjuangan keras mewujudkan cita-cita." },
+        { q: "9. Karakteristik utama dari teks laporan hasil observasi adalah bersifat...", opts: { A: "Subjektif dan imajinatif", B: "Objektif dan faktual berdasarkan fakta objek", C: "Persuasif mengajak pembaca", D: "Fiksi penuh khayalan" }, key: "B", exp: "Pembahasan: Laporan observasi disusun berdasarkan fakta riil di lapangan secara objektif." },
+        { q: "10. Manakah yang termasuk kalimat opini (bukan fakta)...", opts: { A: "Ibu kota Indonesia saat ini adalah Jakarta.", B: "Jumlah penduduk kota itu mencapai 2 juta jiwa.", C: "Menurut saya, pemandangan di pantai itu adalah yang paling indah di dunia.", D: "Buku setebal 400 halaman itu diterbitkan tahun 2025." }, key: "C", exp: "Pembahasan: Opsi C memuat pendapat pribadi." }
+    ],
+    "3": [
+        { q: "1. Berdasarkan kutipan teks 'Penumpang Bus Kota', gagasan utama paragraf tersebut berkaitan dengan...", opts: { A: "Bus kota beroperasi setiap hari di dalam kota.", B: "Keberadaan bus kota membantu mobilitas masyarakat perkotaan.", C: "Sebagian penumpang sedang melihat layar ponsel.", D: "Seorang anak berdiri di dekat sopir bus." }, key: "B", exp: "Pembahasan: Gagasan utama teks menegaskan peran penting bus kota dalam membantu mobilitas warga." },
+        { q: "2. Apa arti kata 'difabel' berdasarkan konteks kalimat pada teks Bus Kota?", opts: { A: "Orang lanjut usia", B: "Penyandang disabilitas", C: "Laki-laki yang memiliki keterbatasan fisik", D: "Seseorang yang perlu mendapat perhatian khusus" }, key: "C", exp: "Pembahasan: Konteks teks merujuk pada penyandang disabilitas atau difabel." },
+        { q: "3. Apa tujuan utama dari pembuatan sebuah iklan komersial?", opts: { A: "Memberikan informasi atau mempromosikan produk/jasa kepada khalayak", B: "Menyampaikan laporan keuangan perusahaan", C: "Menceritakan dongeng masa lalu", D: "Menulis surat pribadi kepada teman" }, key: "A", exp: "Pembahasan: Iklan bertujuan membujuk dan menginformasikan keunggulan produk/jasa." },
+        { q: "4. Dalam struktur teks tanggapan kritis, bagian yang berisi penilaian atau evaluasi terhadap suatu karya disebut...", opts: { A: "Orientasi", B: "Evaluasi / Penilaian", C: "Abstraksi", D: "Koda" }, key: "B", exp: "Pembahasan: Evaluasi memuat penilaian kritis terhadap kelebihan maupun kekurangan karya." },
+        { q: "5. Apa fungsi dari pembuatan lubang resapan biopori di lingkungan rumah?", opts: { A: "Menambah genangan air hujan", B: "Membantu meresapkan air hujan ke dalam tanah serta mengelola sampah organik", C: "Tempat pembuangan limbah plastik pabrik", D: "Menyuburkan tanaman hias dengan bahan kimia" }, key: "B", exp: "Pembahasan: Biopori dibuat untuk pencegahan genangan air dan meresapkan air ke dalam tanah." },
+        { q: "6. Manakah yang termasuk kalimat persuasif (mengajak)...", opts: { A: "Hari ini cuaca sangat cerah dan berawan.", B: "Mari kita jaga kebersihan lingkungan sekolah demi kesehatan bersama!", C: "Buku paket bahasa Indonesia berjumlah 200 halaman.", D: "Keluarga Budi pergi berlibur ke Bali kemarin." }, key: "B", exp: "Pembahasan: Kalimat persuasif ditandai dengan kata ajakan seperti 'mari' atau 'ayo'." },
+        { q: "7. Arti istilah 'literasi' dalam konteks pendidikan modern berkaitan erat dengan kemampuan...", opts: { A: "Berhitung cepat angka matematika", B: "Memahami, mengevaluasi, dan menggunakan informasi tertulis", C: "Menggambar sketsa pemandangan", D: "Olahraga senam lantai" }, key: "B", exp: "Pembahasan: Literasi membaca mencakup pemahaman kritis terhadap teks informasi." },
+        { q: "8. Apa ciri utama dari teks ulasan (resensi buku)?", opts: { A: "Berisi langkah-langkah membuat kue", B: "Mengupas keunggulan dan kelemahan suatu karya (buku/film)", C: "Memuat berita kriminal harian", D: "Berisi dialog naskah drama" }, key: "B", exp: "Pembahasan: Resensi atau ulasan menilai kualitas, isi, kelebihan, serta kekurangan sebuah karya." },
+        { q: "9. Kata baku yang tepat untuk memperbaiki kata tidak baku 'apotek' adalah...", opts: { A: "Apotik", B: "Apotek", C: "Appotek", D: "Epotik" }, key: "B", exp: "Pembahasan: Kata baku dalam KBBI yang benar adalah 'apotek'." },
+        { q: "10. Perhatikan kalimat: 'Ayah membaca koran di teras.' Kata yang menduduki fungsi sebagai objek adalah...", opts: { A: "Ayah", B: "Membaca", C: "Koran", D: "Di teras" }, key: "C", exp: "Pembahasan: S = Ayah, P = Membaca, O = Koran, K = Di teras." }
+    ],
+    "4": [
+        { q: "1. Berdasarkan teks Kupu-Kupu Catopsilia pomona, manakah pernyataan yang BENAR mengenai ciri fisiknya?", opts: { A: "Hanya ditemukan di Pulau Jawa.", B: "Termasuk ke dalam keluarga kupu-kupu putih dan kuning (Pieridae).", C: "Ukuran tubuhnya tergolong sangat besar.", D: "Memiliki abdomen berwarna merah menyala." }, key: "B", exp: "Pembahasan: Sesuai teks, kupu-kupu tersebut termasuk ke dalam keluarga Pieridae." },
+        { q: "2. Apa tema utama yang tepat dari puisi berjudul 'Untukmu Guru'?", opts: { A: "Kesedihan seorang guru", B: "Kekaguman dan penghormatan mendalam kepada guru", C: "Harapan murid agar cepat lulus ujian", D: "Kritik terhadap fasilitas sekolah" }, key: "B", exp: "Pembahasan: Isi puisi secara keseluruhan mencerminkan bentuk apresiasi kepada guru." },
+        { q: "3. Poster kampanye kesehatan anak (seperti '7 Kebiasaan Anak Indonesia Hebat') bertujuan untuk...", opts: { A: "Menakut-nakuti siswa di sekolah", B: "Mendorong pembiasaan pola hidup sehat dan disiplin sejak dini", C: "Menjual produk makanan ringan pabrik", D: "Mengajak siswa sering bolos sekolah" }, key: "B", exp: "Pembahasan: Poster tersebut memuat edukasi kebiasaan positif harian bagi anak." },
+        { q: "4. Apa dampak negatif utama jika seorang anak sering tidur terlalu larut malam karena bermain gawai?", opts: { A: "Tubuh semakin bugar dan berenergi", B: "Mudah lelah, sulit berkonsentrasi saat belajar, dan rentan sakit", C: "Nilai ujian meningkat drastis", D: "Penglihatan mata semakin tajam" }, key: "B", exp: "Pembahasan: Kurang tidur akibat gawai menurunkan konsentrasi dan kesehatan fisik." },
+        { q: "5. Manakah yang termasuk kalimat perintah (imperatif)...", opts: { A: "Di mana kamu meletakkan tas sekolah?", B: "Tolong ambilkan buku itu di atas meja!", C: "Alangkah indahnya pemandangan pagi ini!", D: "Semoga kita semua selalu sehat." }, key: "B", exp: "Pembahasan: Kalimat imperatif atau perintah ditandai dengan permintaan atau pelarangan melakukan sesuatu." },
+        { q: "6. Apa yang dimaksud dengan sinonim...", opts: { A: "Persamaan kata", B: "Lawan kata", C: "Kata serapan asing", D: "Kata berimbuhan ganda" }, key: "A", exp: "Pembahasan: Sinonim adalah kata-kata yang memiliki arti atau makna yang sama." },
+        { q: "7. Apa yang dimaksud dengan antonim...", opts: { A: "Persamaan makna kata", B: "Lawan makna kata", C: "Singkatan kata resmi", D: "Arti kiasan" }, key: "B", exp: "Pembahasan: Antonim adalah kata-kata yang memiliki makna berlawanan." },
+        { q: "8. Dalam struktur teks berita, bagian teras berita (lead) umumnya terletak pada...", opts: { A: "Paragraf terakhir", B: "Paragraf pertama sebagai rangkuman inti peristiwa", C: "Daftar pustaka", D: "Catatan kaki" }, key: "B", exp: "Pembahasan: Teras berita berada di awal berita untuk menarik perhatian dan merangkum pokok kejadian." },
+        { q: "9. Unsur berita yang menanyakan 'mengapa' suatu peristiwa terjadi berkaitan dengan aspek...", opts: { A: "What (Apa)", B: "Who (Siapa)", C: "Why (Mengapa / Alasan)", D: "Where (Di mana)" }, key: "C", exp: "Pembahasan: Unsur 'mengapa' mencakup latar belakang atau alasan terjadinya peristiwa." },
+        { q: "10. Perbaikan penulisan ejaan yang salah pada kata 'sintesa' sesuai KBBI baku adalah...", opts: { A: "Sinteza", B: "Sintesis", C: "Synteca", D: "Syntesa" }, key: "B", exp: "Pembahasan: Kata baku serapan yang tepat dalam bahasa Indonesia adalah 'sintesis'." }
+    ],
+    "5": [
+        // --- I. ASPEK PEMAHAMAN TEKSTUAL (LITERAL) ---
+        {
+            tag: "I. Aspek Pemahaman Tekstual (Literal)",
+            stimulus: "Teks Stimulus: \"Banjir bandang yang menerjang Desa Sukamaju pada hari Selasa malam menghancurkan sekitar 45 rumah warga dan memutus jembatan utama penghubung antardesa. Menurut Badan Penanggulangan Bencana Daerah (BPBD), bencana ini dipicu oleh curah hujan tinggi yang turun secara terus-menerus selama enam jam serta penyumbatan aliran sungai akibat maraknya sampah plastik.\"",
+            q: "1. Kapan terjadinya bencana banjir bandang di Desa Sukamaju?",
+            opts: { A: "Senin malam", B: "Selasa malam", C: "Rabu pagi", D: "Selasa pagi" },
+            key: "B",
+            exp: "Pembahasan Tekstual: Dinyatakan secara tersurat pada teks \"...pada hari Selasa malam...\"."
+        },
+        {
+            tag: "I. Aspek Pemahaman Tekstual (Literal)",
+            stimulus: "Berdasarkan teks banjir bandang di Desa Sukamaju di atas.",
+            q: "2. Berapa jumlah perkiraan rumah warga yang hancur akibat banjir tersebut?",
+            opts: { A: "Sekitar 35 rumah", B: "Sekitar 40 rumah", C: "Sekitar 45 rumah", D: "Sekitar 50 rumah" },
+            key: "C",
+            exp: "Pembahasan Tekstual: Informasi tersurat menyebutkan \"...menghancurkan sekitar 45 rumah warga...\"."
+        },
+        {
+            tag: "I. Aspek Pemahaman Tekstual (Literal)",
+            stimulus: "Berdasarkan teks banjir bandang di Desa Sukamaju di atas.",
+            q: "3. Apa penyebab utama banjir bandang berdasarkan laporan BPBD?",
+            opts: { A: "Penebangan liar di hutan lindung", B: "Kurangnya saluran air di desa", C: "Curah hujan tinggi dan penyumbatan aliran sungai oleh sampah plastik", D: "Jebolnya bendungan di dekat desa" },
+            key: "C",
+            exp: "Pembahasan Tekstual: Laporan BPBD secara eksplisit menyatakan dipicu curah hujan tinggi dan penyumbatan sampah."
+        },
+        {
+            tag: "I. Aspek Pemahaman Tekstual (Literal)",
+            stimulus: "Teks Stimulus: \"Vitamin C adalah nutrisi yang sangat penting bagi tubuh manusia karena berfungsi sebagai antioksidan, meningkatkan sistem kekebalan tubuh, serta mempercepat proses penyembuhan luka. Vitamin ini banyak ditemukan pada buah-buahan segar seperti jeruk, kiwi, stroberi, serta sayuran hijau seperti brokoli dan bayam. Karena tubuh tidak dapat memproduksi atau menyimpan Vitamin C dalam jumlah besar, konsumsi makanan kaya vitamin ini dianjurkan setiap hari.\"",
+            q: "4. Apa salah satu fungsi utama Vitamin C bagi tubuh manusia?",
+            opts: { A: "Menjaga kekuatan tulang dan gigi", B: "Meningkatkan sistem kekebalan tubuh", C: "Membentuk sel darah merah", D: "Menambah massa otot secara instan" },
+            key: "B",
+            exp: "Pembahasan Tekstual: Teks menyebutkan vitamin C berfungsi meningkatkan sistem kekebalan tubuh."
+        },
+        {
+            tag: "I. Aspek Pemahaman Tekstual (Literal)",
+            stimulus: "Berdasarkan teks Vitamin C di atas.",
+            q: "5. Manakah kelompok makanan di bawah ini yang kaya akan Vitamin C berdasarkan teks?",
+            opts: { A: "Daging sapi, ikan, dan telur", B: "Nasi putih, kentang, dan ubi", C: "Jeruk, stroberi, dan brokoli", D: "Susu, keju, dan mentega" },
+            key: "C",
+            exp: "Pembahasan Tekstual: Teks mencantumkan buah jeruk, stroberi, serta sayur brokoli."
+        },
+        {
+            tag: "I. Aspek Pemahaman Tekstual (Literal)",
+            stimulus: "Berdasarkan teks Vitamin C di atas.",
+            q: "6. Mengapa konsumsi makanan kaya Vitamin C dianjurkan dilakukan setiap hari?",
+            opts: { A: "Karena vitamin ini mudah rusak di dalam kulkas", B: "Karena tubuh tidak dapat memproduksi atau menyimpan vitamin ini dalam jumlah besar", C: "Karena rasanya yang enak dan menyegarkan", D: "Karena vitamin ini wajib dicampur dengan protein hewani" },
+            key: "B",
+            exp: "Pembahasan Tekstual: Tersurat pada kalimat terakhir \"...tubuh tidak dapat memproduksi atau menyimpan Vitamin C dalam jumlah besar...\"."
+        },
+        {
+            tag: "I. Aspek Pemahaman Tekstual (Literal)",
+            stimulus: "Berdasarkan teks Vitamin C di atas.",
+            q: "7. Apa yang dimaksud Vitamin C berdasarkan fungsi awalnya dalam teks?",
+            opts: { A: "Nutrisi yang berfungsi sebagai antioksidan", B: "Hormon pengatur metabolisme tubuh", C: "Zat kimia berbahaya jika dikonsumsi berlebihan", D: "Suplemen buatan pabrik farmasi" },
+            key: "A",
+            exp: "Pembahasan Tekstual: Teks menyatakan vitamin C adalah nutrisi yang berfungsi sebagai antioksidan."
+        },
+        {
+            tag: "I. Aspek Pemahaman Tekstual (Literal)",
+            stimulus: "Teks Stimulus: \"Kue Cucur adalah salah satu jajanan pasar tradisional khas Betawi yang memiliki tekstur empuk di bagian tengah dan renyah di pinggirannya. Kue ini terbuat dari adonan tepung beras dan gula merah yang digoreng menggunakan minyak kelapa panas dalam wajan cekung kecil agar terbentuk 'topi' atau gundukan di bagian tengahnya.\"",
+            q: "8. Kue Cucur merupakan jajanan pasar tradisional yang berasal dari daerah...",
+            opts: { A: "Sunda", B: "Betawi", C: "Jawa", D: "Minang" },
+            key: "B",
+            exp: "Pembahasan Tekstual: Teks secara eksplisit menyatakan khas Betawi."
+        },
+        {
+            tag: "I. Aspek Pemahaman Tekstual (Literal)",
+            stimulus: "Berdasarkan teks Kue Cucur di atas.",
+            q: "9. Bahan utama apa saja yang digunakan untuk membuat adonan Kue Cucur?",
+            opts: { A: "Tepung terigu dan gula pasir", B: "Tepung ketan dan santan", C: "Tepung beras dan gula merah", D: "Tepung tapioka dan gula aren" },
+            key: "C",
+            exp: "Pembahasan Tekstual: Teks menyebutkan terbuat dari tepung beras dan gula merah."
+        },
+        {
+            tag: "I. Aspek Pemahaman Tekstual (Literal)",
+            stimulus: "Berdasarkan teks Kue Cucur di atas.",
+            q: "10. Bagaimana ciri khas tekstur dari Kue Cucur yang baik?",
+            opts: { A: "Keras di luar dan lembek di dalam", B: "Empuk di bagian tengah dan renyah di pinggirannya", C: "Lembut dan kenyal di seluruh bagian", D: "Padat dan manis pekat" },
+            key: "B",
+            exp: "Pembahasan Tekstual: Teks menuliskan tekstur empuk di bagian tengah dan renyah di pinggirannya."
+        },
+
+        // --- II. ASPEK PEMAHAMAN INFERENSIAL ---
+        {
+            tag: "II. Aspek Pemahaman Inferensial",
+            stimulus: "Teks Stimulus: \"Pagi itu, Rian berjalan mondar-mandir di depan ruang kelas sambil menggigit kukunya. Sesekali ia melirik jam tangan digital di pergelangan tangannya dengan napas yang memburu. Lembar ringkasan materi di tangannya sudah tampak kusut karena terlalu erat digenggam.\"",
+            q: "11. Berdasarkan ilustrasi perilaku Rian, dapat disimpulkan bahwa ia sedang...",
+            opts: { A: "Marah besar kepada temannya", B: "Merasa gugup atau cemas menghadapi sesuatu", C: "Kebingungan mencari alamat ruangan", D: "Sangat gembira menyambut liburan" },
+            key: "B",
+            exp: "Pembahasan Inferensial: Mondar-mandir, menggigit kuku, dan napas memburu merupakan gestur kecemasan/kegugupan."
+        },
+        {
+            tag: "II. Aspek Pemahaman Inferensial",
+            stimulus: "Berdasarkan ilustrasi perilaku Rian di atas.",
+            q: "12. Perilaku Rian yang menggigit kuku dan menggenggam lembar ringkasan dengan erat menunjukkan bahwa...",
+            opts: { A: "Rian belum belajar sama sekali", B: "Rian sedang bersiap mengikuti ujian atau presentasi penting", C: "Rian sedang menunggu bel istirahat berbunyi", D: "Rian sedang menghafal lirik lagu untuk lomba" },
+            key: "B",
+            exp: "Pembahasan Inferensial: Memegang lembar ringkasan materi erat-erat menyiratkan persiapan menghadapi tes/ujian."
+        },
+        {
+            tag: "II. Aspek Pemahaman Inferensial",
+            stimulus: "Berdasarkan ilustrasi perilaku Rian di atas.",
+            q: "13. Suasana hati yang paling dominan dirasakan oleh Rian pada saat itu adalah...",
+            opts: { A: "Tenang dan santai", B: "Sedih dan kecewa", C: "Tegang dan gelisah", D: "Kecewa dan marah" },
+            key: "C",
+            exp: "Pembahasan Inferensial: Situasi tersebut merefleksikan kondisi psikologis tegang dan gelisah."
+        },
+        {
+            tag: "II. Aspek Pemahaman Inferensial",
+            stimulus: "Teks Stimulus: \"Sejak dua tahun terakhir, Pak Budi beralih dari penggunaan pupuk kimia ke pupuk organik untuk tanaman padinya. Meskipun pada panen pertama hasilnya sempat menurun drastis, kini tanah di sawahnya menjadi jauh lebih gembur, populasi cacing tanah meningkat, dan biaya produksi jangka panjangnya jauh lebih hemat.\"",
+            q: "14. Apa implikasi atau kesimpulan jangka panjang dari keputusan Pak Budi beralih ke pupuk organik?",
+            opts: { A: "Pak Budi akan mengalami kerugian finansial yang besar selamanya", B: "Kualitas ekosistem tanah sawah membaik dan biaya operasional lebih efisien", C: "Tanaman padi milik Pak Budi menjadi kebal terhadap segala jenis hama", D: "Jumlah hasil panen langsung melonjak tinggi pada minggu pertama" },
+            key: "B",
+            exp: "Pembahasan Inferensial: Tanah gembur dan biaya hemat menyimpulkan perbaikan ekosistem dan efisiensi jangka panjang."
+        },
+        {
+            tag: "II. Aspek Pemahaman Inferensial",
+            stimulus: "Berdasarkan teks Pak Budi di atas.",
+            q: "15. Mengapa hasil panen Pak Budi sempat menurun drastis pada awal masa peralihan?",
+            opts: { A: "Karena bibit padi yang digunakan berkualitas buruk", B: "Karena tanah perlu waktu penyesuaian setelah lama bergantung pada bahan kimia", C: "Karena Pak Budi kurang rajin merawat sawahnya", D: "Karena cuaca saat itu sangat ekstrem" },
+            key: "B",
+            exp: "Pembahasan Inferensial: Peralihan dari bahan kimia ke organik memerlukan masa pemulihan struktur biologi tanah."
+        },
+        {
+            tag: "II. Aspek Pemahaman Inferensial",
+            stimulus: "Berdasarkan teks Pak Budi di atas.",
+            q: "16. Peningkatan populasi cacing tanah di sawah Pak Budi mengindikasikan bahwa...",
+            opts: { A: "Tanah sawah semakin subur dan sehat secara biologis", B: "Sawah tersebut akan segera dilanda banjir", C: "Pupuk kimia masih tertinggal di dalam tanah", D: "Tanaman padi kekurangan air" },
+            key: "A",
+            exp: "Pembahasan Inferensial: Kehadiran cacing tanah merupakan indikator utama kesuburan biologis tanah."
+        },
+        {
+            tag: "II. Aspek Pemahaman Inferensial",
+            stimulus: "Berdasarkan teks Pak Budi di atas.",
+            q: "17. Sikap yang dapat teladani dari tokoh Pak Budi adalah...",
+            opts: { A: "Pantang menyerah dan berorientasi pada kelestarian jangka panjang", B: "Selalu memilih cara instan demi keuntungan cepat", C: "Ragu-ragu dalam mengambil keputusan bisnis", D: "Enggan mencoba metode baru dalam bertani" },
+            key: "A",
+            exp: "Pembahasan Inferensial: Pak Budi sabar melewati penurunan awal demi kelestarian alam dan hasil jangka panjang."
+        },
+        {
+            tag: "II. Aspek Pemahaman Inferensial",
+            stimulus: "Teks Stimulus: \"Penggunaan gawai (smartphone) pada anak usia dini ibarat pisau bermata dua. Di satu sisi, gawai menyediakan akses tak terbatas ke berbagai aplikasi edukasi interaktif. Namun, di sisi lain, paparan layar yang terlalu lama terbukti menurunkan rentang perhatian (attention span) anak dan memicu gangguan pola tidur.\"",
+            q: "18. Maksud dari ungkapan \"pisau bermata dua\" dalam teks tersebut adalah...",
+            opts: { A: "Gawai memiliki fungsi ganda sebagai senjata tajam", B: "Gawai memiliki dampak positif sekaligus dampak negatif yang sama besarnya", C: "Penggunaan gawai harus diawasi oleh orang dewasa", D: "Gawai hanya boleh digunakan untuk hal-hal yang berbahaya" },
+            key: "B",
+            exp: "Pembahasan Inferensial: Ungkapan 'pisau bermata dua' bermakna memiliki sisi manfaat sekaligus sisi risiko/dampak buruk."
+        },
+        {
+            tag: "II. Aspek Pemahaman Inferensial",
+            stimulus: "Berdasarkan teks gawai di atas.",
+            q: "19. Kesimpulan yang paling tepat mengenai hubungan durasi penggunaan gawai dan kesehatan anak adalah...",
+            opts: { A: "Semakin lama anak menatap layar gawai, semakin baik kemampuan otaknya", B: "Durasi penggunaan gawai tidak memengaruhi tumbuh kembang anak", C: "Penggunaan gawai secara berlebihan berdampak buruk pada fokus dan tidur anak", D: "Gawai sama sekali tidak memiliki manfaat edukasi bagi anak" },
+            key: "C",
+            exp: "Pembahasan Inferensial: Paparan layar terlalu lama terbukti menurunkan perhatian dan mengganggu tidur."
+        },
+        {
+            tag: "II. Aspek Pemahaman Inferensial",
+            stimulus: "Berdasarkan teks gawai di atas.",
+            q: "20. Prediksi yang logis jika seorang anak dibiarkan bermain gawai sepanjang hari tanpa batas adalah...",
+            opts: { A: "Anak tersebut akan menjadi juara kelas", B: "Anak tersebut berisiko mengalami gangguan tidur dan sulit berkonsentrasi", C: "Penglihatan anak tersebut akan semakin tajam", D: "Anak tersebut menjadi lebih aktif bersosialisasi di dunia nyata" },
+            key: "B",
+            exp: "Pembahasan Inferensial: Konsekuensi logis dari penggunaan tanpa batas adalah gangguan atensi dan pola tidur."
+        },
+
+        // --- III. ASPEK EVALUASI DAN APRESIASI ---
+        {
+            tag: "III. Aspek Evaluasi dan Apresiasi",
+            stimulus: "Teks Stimulus: \"Matahari perlahan tenggelam di ufuk barat, menyisakan warna jingga yang hangat di langit senja. Di teras rumah tua itu, kakek duduk tenang sambil menyeruput teh hangat, seolah menikmati kedamaian setelah bertahun-tahun badai kehidupan menerpanya.\"",
+            q: "21. Apa unsur estetika (gaya bahasa) yang paling menonjol pada kalimat pertama kutipan tersebut?",
+            opts: { A: "Personifikasi (memberikan sifat manusia pada benda mati)", B: "Metafora (perbandingan langsung)", C: "Hiperbola (melebih-lebihkan)", D: "Litotes (merendahkan diri)" },
+            key: "A",
+            exp: "Evaluasi Apresiasi: Penggambaran matahari tenggelam dan warna jingga hangat yang seolah hidup menggambarkan gaya deskriptif-estetis."
+        },
+        {
+            tag: "III. Aspek Evaluasi dan Apresiasi",
+            stimulus: "Berdasarkan kutipan cerpen di atas.",
+            q: "22. Bagaimana pengarang membangun suasana (atmosfer) dalam kutipan cerita di atas?",
+            opts: { A: "Melalui deskripsi visual senja dan ketenangan sang kakek", B: "Melalui dialog yang menegangkan antartokoh", C: "Melalui konflik batin yang rumit", D: "Melalui alur cerita yang bergerak sangat cepat" },
+            key: "A",
+            exp: "Evaluasi Apresiasi: Suasana tenang dibangun lewat penggambaran visual senja dan aktivitas kakek."
+        },
+        {
+            tag: "III. Aspek Evaluasi dan Apresiasi",
+            stimulus: "Berdasarkan kutipan cerpen di atas.",
+            q: "23. Apa kesan atau pesan moral yang dapat diapresiasi dari penggambaran sosok kakek di akhir teks?",
+            opts: { A: "Pentingnya menikmati masa tua dengan ketenangan batin dan rasa syukur", B: "Kakek adalah orang yang kesepian dan diabaikan keluarga", C: "Teh hangat dapat menyembuhkan segala penyakit", D: "Hidup di desa lebih baik daripada di kota besar" },
+            key: "A",
+            exp: "Evaluasi Apresiasi: Pesan damai setelah 'badai kehidupan' menyimbolkan penerimaan dan ketenangan masa tua."
+        },
+        {
+            tag: "III. Aspek Evaluasi dan Apresiasi",
+            stimulus: "Teks Stimulus: \"Novel Bumi karya Tere Liye berhasil memikat pembaca remaja melalui alur petualangan fiksi ilmiah yang imajinatif dan penuh teka-teki. Meskipun ada beberapa istilah sains fiksi yang terasa agak rumit bagi pembaca awam, penokohan yang kuat serta nilai-nilai persahabatan yang diselipkan membuat buku ini tetap sangat layak dibaca.\"",
+            q: "24. Bagian kalimat manakah dalam teks resensi tersebut yang menunjukkan bentuk kritik (kekurangan)?",
+            opts: { A: "\"Novel Bumi karya Tere Liye berhasil memikat pembaca remaja...\"", B: "\"...alur petualangan fiksi ilmiah yang imajinatif dan penuh teka-teki.\"", C: "\"Meskipun ada beberapa istilah sains fiksi yang terasa agak rumit bagi pembaca awam...\"", D: "\"...penokohan yang kuat serta nilai-nilai persahabatan yang diselipkan...\"" },
+            key: "C",
+            exp: "Evaluasi Apresiasi: Kata 'meskipun' menandai kelemahan/kritik bahwa istilah sainsnya agak rumit."
+        },
+        {
+            tag: "III. Aspek Evaluasi dan Apresiasi",
+            stimulus: "Berdasarkan teks resensi novel Bumi di atas.",
+            q: "25. Apa bentuk apresiasi atau pujian utama yang diberikan oleh penulis resensi terhadap novel tersebut?",
+            opts: { A: "Harganya sangat terjangkau bagi pelajar", B: "Alur petualangannya imajinatif, penokohannya kuat, dan sarat nilai persahabatan", C: "Novel tersebut ditulis oleh penulis terkenal", D: "Tidak memiliki satupun kekurangan dalam hal penulisan" },
+            key: "B",
+            exp: "Evaluasi Apresiasi: Pujian resensi terletak pada keunggulan alur, penokohan, dan nilai persahabatan."
+        },
+        {
+            tag: "III. Aspek Evaluasi dan Apresiasi",
+            stimulus: "Berdasarkan teks resensi novel Bumi di atas.",
+            q: "26. Berdasarkan isinya, kepada siapa rekomendasi utama buku tersebut ditujukan?",
+            opts: { A: "Peneliti sains profesional", B: "Pembaca remaja", C: "Anak-anak balita", D: "Pemerhati sejarah kuno" },
+            key: "B",
+            exp: "Evaluasi Apresiasi: Teks secara eksplisit menyebutkan berhasil memikat pembaca remaja."
+        },
+        {
+            tag: "III. Aspek Evaluasi dan Apresiasi",
+            stimulus: "Teks Stimulus: \"Pemerintah kota seharusnya segera memperbanyak ruang terbuka hijau (RTH) di pusat-pusat perkotaan. Saat ini, tingkat polusi udara akibat emisi kendaraan bermotor sudah berada di ambang batas yang membahayakan kesehatan paru-paru warga. Tanpa adanya penambahan pohon dan taman kota, kota ini akan segera berubah menjadi 'lautan beton' yang menyesakkan.\"",
+            q: "27. Kalimat manakah yang berfungsi sebagai klaim utama (pendapat/tesis) penulis dalam paragraf tersebut?",
+            opts: { A: "Tingkat polusi udara sudah berada di ambang batas membahayakan.", B: "Pemerintah kota seharusnya segera memperbanyak ruang terbuka hijau di pusat perkotaan.", C: "Emisi kendaraan bermotor menjadi penyebab utama polusi.", D: "Kota ini akan segera berubah menjadi lautan beton." },
+            key: "B",
+            exp: "Evaluasi Apresiasi: Klaim/tesis utama penulis adalah seruan agar pemerintah segera memperbanyak RTH."
+        },
+        {
+            tag: "III. Aspek Evaluasi dan Apresiasi",
+            stimulus: "Berdasarkan teks argumen RTH di atas.",
+            q: "28. Apa jenis bukti atau alasan pendukung yang digunakan penulis untuk memperkuat argumennya?",
+            opts: { A: "Data statistik jumlah kendaraan bermotor secara rinci", B: "Pendapat dari para ahli kesehatan dunia", C: "Kondisi tingkat polusi udara yang membahayakan kesehatan dan minimnya taman", D: "Hasil survei pendapat warga kota" },
+            key: "C",
+            exp: "Evaluasi Apresiasi: Penulis mendasarkan argumen pada fakta kondisi polusi udara yang mengancam kesehatan."
+        },
+        {
+            tag: "III. Aspek Evaluasi dan Apresiasi",
+            stimulus: "Berdasarkan teks argumen RTH di atas.",
+            q: "29. Bagaimana evaluasi terhadap efektivitas kalimat penutup (\"lautan beton yang menyesakkan\" dalam teks)?",
+            opts: { A: "Kalimat tersebut kurang efektif karena membingungkan pembaca", B: "Kalimat tersebut merupakan majas metafora yang efektif memperkuat kesan sesaknya polusi kota", C: "Kalimat tersebut adalah fakta ilmiah yang dapat dibuktikan di laboratorium", D: "Kalimat tersebut tidak berkaitan sama sekali dengan paragraf sebelumnya" },
+            key: "B",
+            exp: "Evaluasi Apresiasi: Frasa 'lautan beton' adalah metafora efektif untuk menggambarkan padatnya bangunan tanpa pohon."
+        },
+        {
+            tag: "III. Aspek Evaluasi dan Apresiasi",
+            stimulus: "Berdasarkan teks argumen RTH di atas.",
+            q: "30. Jika seorang pembaca ingin mengkritisi argumen penulis, kelemahan apa yang paling mungkin ditemukan?",
+            opts: { A: "Penulis tidak menyebutkan secara spesifik lokasi atau data kuantitatif tingkat polusi kota tersebut", B: "Penulis menggunakan bahasa yang terlalu santai", C: "Penulis tidak menyukai kendaraan bermotor", D: "Paragraf yang disajikan terlalu panjang dan membosankan" },
+            key: "A",
+            exp: "Evaluasi Apresiasi: Kritik konstruktif terhadap argumen dapat diarahkan pada absennya data kuantitatif spesifik (angka/lokasi)."
+        }
+    ],
+    "6": [
+        { tag: "Tekstual", stimulus: "Perpustakaan SMPN 2 Cipongkor kini memiliki pojok baca digital. Siswa dapat mengakses ribuan buku elektronik. Namun, jumlah peminjam buku cetak tidak menurun. Banyak siswa merasa lebih mudah memahami buku cetak karena bisa menandai halaman dan menulis catatan. Sekolah pun mempertahankan kedua layanan secara berdampingan.", q: "1. Ide pokok teks tersebut adalah...", opts: { A: "Perpustakaan sekolah memiliki pojok baca digital", B: "Siswa lebih suka buku cetak daripada buku digital", C: "Sekolah mempertahankan buku cetak dan buku digital secara berdampingan", D: "Pustakawan mencatat jumlah peminjam buku" }, key: "C", exp: "Ide pokoknya adalah sekolah mempertahankan kedua layanan secara berdampingan." },
+        { tag: "Tekstual", stimulus: "Perpustakaan SMPN 2 Cipongkor kini memiliki pojok baca digital. Siswa dapat mengakses ribuan buku elektronik. Namun, jumlah peminjam buku cetak tidak menurun.", q: "2. Manakah pernyataan yang BENAR berdasarkan teks? (Pilih A jika B dan D benar)", opts: { A: "B dan D benar - Buku cetak mudah diberi catatan, pojok digital sediakan ribuan buku", B: "Semua siswa beralih ke buku elektronik", C: "Sekolah menghapus layanan buku cetak", D: "Tidak ada siswa yang suka buku cetak" }, key: "A", exp: "Buku cetak mudah diberi catatan dan pojok digital menyediakan ribuan buku elektronik." },
+        { tag: "Tekstual", stimulus: "Sekolah pun mempertahankan kedua layanan secara berdampingan.", q: "3. Kata 'berdampingan' bermakna...", opts: { A: "Bersaing untuk menang", B: "Berjalan bersama-sama", C: "Bergantian dipakai", D: "Berdiri sendiri-sendiri" }, key: "B", exp: "Berdampingan artinya berjalan bersama-sama / berdampingan." },
+        { tag: "Tekstual", stimulus: "Teks 1: Pasar tradisional di Cipongkor ramai setiap pagi. Pedagang menjajakan sayur, buah, dan jajanan pasar dengan harga terjangkau. Teks 2: Pasar modern di kota menawarkan suasana berbelanja yang sejuk dan bersih. Pengunjung dapat memilih barang dengan label harga yang jelas.", q: "4. Perbedaan informasi kedua teks adalah...", opts: { A: "Teks 1 membahas harga terjangkau, Teks 2 membahas kenyamanan tempat", B: "Teks 1 membahas kebersihan, Teks 2 membahas keramaian", C: "Kedua teks membahas harga yang sama", D: "Kedua teks membahas pasar tradisional" }, key: "A", exp: "Teks 1 fokus harga terjangkau, Teks 2 fokus kenyamanan tempat." },
+        { tag: "Tekstual", stimulus: "Teks 1: Pasar tradisional di Cipongkor ramai setiap pagi. Teks 2: Pasar modern di kota menawarkan suasana sejuk dan bersih.", q: "5. Persamaan kedua teks adalah...", opts: { A: "Sama-sama membahas tempat berbelanja", B: "Sama-sama membahas harga mahal", C: "Sama-sama membahas pasar di Cipongkor", D: "Sama-sama membahas jajanan pasar" }, key: "A", exp: "Keduanya membahas tempat berbelanja." },
+        { tag: "Tekstual", stimulus: "Pasar tradisional di Cipongkor ramai setiap pagi. Pasar modern di kota menawarkan suasana sejuk dan bersih dengan label harga yang jelas.", q: "6. Pernyataan yang BENAR adalah...", opts: { A: "Pasar tradisional hanya menjual sayur", B: "Pasar modern memiliki label harga yang jelas", C: "Pasar tradisional tidak ada pembeli", D: "Pasar modern tidak bersih" }, key: "B", exp: "Teks menyebut pasar modern memiliki label harga yang jelas." },
+        { tag: "Inferensial", stimulus: "Arkan menatap layar ponselnya. Sejak pagi, notifikasi grup kelas tidak berhenti. Ada yang mengirim meme, ada yang mengingatkan tugas. Arkan menghela napas. Ia mematikan notifikasi selama satu jam agar bisa fokus mengerjakan tugas Bahasa Indonesia.", q: "7. Informasi tersirat dari teks tersebut adalah...", opts: { A: "Arkan tidak suka berteman", B: "Arkan merasa terganggu notifikasi yang terus muncul", C: "Arkan tidak mengerjakan tugas", D: "Arkan mematikan ponsel seharian" }, key: "B", exp: "Arkan merasa terganggu sehingga mematikan notifikasi agar fokus." },
+        { tag: "Inferensial", stimulus: "Arkan mematikan notifikasi selama satu jam agar bisa fokus mengerjakan tugas Bahasa Indonesia.", q: "8. Watak Arkan yang tergambar adalah...", opts: { A: "Pemalas dan mudah menyerah", B: "Disiplin dan berusaha fokus", C: "Sombong dan tidak peduli", D: "Ceroboh dan pelupa" }, key: "B", exp: "Arkan disiplin, berusaha fokus dengan mematikan notifikasi." },
+        { tag: "Apresiasi", stimulus: "Arkan menatap layar ponselnya. Sejak pagi, notifikasi grup kelas tidak berhenti.", q: "9. Kalimat berikut yang menggunakan kata kias adalah...", opts: { A: "Ibu membeli dua kilogram beras", B: "Semangatnya membara seperti api yang tak padam", C: "Adik sedang membaca buku", D: "Ayah memperbaiki sepeda" }, key: "B", exp: "Membara seperti api adalah perumpamaan / simile." },
+        { tag: "Tekstual", stimulus: "Membuang sampah ke sungai menyebabkan banjir dan merusak ekosistem air. Sampah plastik yang sulit terurai mencemari air dan membahayakan ikan. Jika kebiasaan ini dibiarkan, lingkungan akan semakin rusak.", q: "10. Simpulan yang tepat untuk teks tersebut adalah...", opts: { A: "Banjir hanya disebabkan hujan deras", B: "Membuang sampah ke sungai merugikan lingkungan dan harus dihentikan", C: "Ikan di sungai tidak terpengaruh sampah", D: "Sampah plastik mudah terurai di air" }, key: "B", exp: "Simpulannya: membuang sampah merugikan lingkungan dan harus dihentikan." },
+        { tag: "Tekstual", stimulus: "Membuang sampah ke sungai menyebabkan banjir dan merusak ekosistem air. Sampah plastik yang sulit terurai mencemari air dan membahayakan ikan.", q: "11. Akibat membuang sampah ke sungai adalah...", opts: { A: "Air sungai menjadi bersih", B: "Terjadi banjir dan ekosistem air rusak", C: "Ikan menjadi lebih sehat", D: "Sungai menjadi lebih dalam" }, key: "B", exp: "Akibatnya banjir dan ekosistem air rusak." },
+        { tag: "Tekstual", stimulus: "Membuang sampah ke sungai menyebabkan banjir. Sampah plastik sulit terurai.", q: "12. Antonim kata 'rusak' pada teks adalah...", opts: { A: "Hancur", B: "Baik / Lestari", C: "Kotor", D: "Bahaya" }, key: "B", exp: "Lawan kata rusak adalah baik / lestari." },
+        { tag: "Tekstual", stimulus: "Warga Kampung Cibeber bergotong royong membersihkan selokan setiap Minggu pagi. Kegiatan ini dilakukan untuk mencegah banjir saat musim hujan. Selain membersihkan selokan, warga juga menanam pohon di pinggir jalan. Kepala dusun mengatakan, kebersamaan adalah kunci lingkungan yang sehat.", q: "13. Tujuan utama kegiatan gotong royong warga adalah...", opts: { A: "Agar kampung terlihat ramai", B: "Mencegah banjir saat musim hujan", C: "Menanam pohon saja", D: "Mengumpulkan dana desa" }, key: "B", exp: "Tujuannya mencegah banjir saat musim hujan." },
+        { tag: "Tekstual", stimulus: "Warga Kampung Cibeber bergotong royong membersihkan selokan setiap Minggu pagi. Selain itu, warga juga menanam pohon di pinggir jalan.", q: "14. Kegiatan yang dilakukan warga adalah...", opts: { A: "Membersihkan selokan dan menanam pohon", B: "Membuang sampah ke sungai", C: "Membakar sampah di selokan", D: "Menebang pohon" }, key: "A", exp: "Warga membersihkan selokan dan menanam pohon." },
+        { tag: "Inferensial", stimulus: "Kepala dusun mengatakan, kebersamaan adalah kunci lingkungan yang sehat.", q: "15. Makna kata 'kunci' pada kalimat tersebut adalah...", opts: { A: "Alat untuk membuka pintu", B: "Hal yang paling penting / penentu", C: "Gembok besi", D: "Kumpulan kunci motor" }, key: "B", exp: "Kunci di sini bermakna hal yang paling penting." },
+        { tag: "Tekstual", stimulus: "R.A. Kartini lahir di Jepara pada 21 April 1879. Sejak kecil, ia gemar membaca buku. Melalui surat-suratnya, ia menyuarakan pentingnya pendidikan bagi perempuan. Perjuangannya dikenang hingga kini dan tanggal kelahirannya diperingati sebagai Hari Kartini.", q: "16. Teks tersebut termasuk teks...", opts: { A: "Biografi", B: "Eksplanasi", C: "Prosedur", D: "Cerpen" }, key: "A", exp: "Teks tentang riwayat hidup tokoh adalah biografi." },
+        { tag: "Tekstual", stimulus: "R.A. Kartini lahir di Jepara pada 21 April 1879. Ia menyuarakan pentingnya pendidikan bagi perempuan.", q: "17. Pernyataan yang sesuai dengan teks adalah...", opts: { A: "Kartini lahir di Jakarta", B: "Kartini memperjuangkan pendidikan bagi perempuan", C: "Kartini tidak suka membaca", D: "Hari Kartini diperingati 17 Agustus" }, key: "B", exp: "Kartini memperjuangkan pendidikan bagi perempuan." },
+        { tag: "Tekstual", stimulus: "R.A. Kartini lahir di Jepara pada 21 April 1879. Sejak kecil, ia gemar membaca buku.", q: "18. Pernyataan yang BENAR adalah...", opts: { A: "Kartini lahir 21 April 1879 dan gemar membaca buku", B: "Kartini lahir di Jakarta", C: "Kartini menentang pendidikan perempuan", D: "Kartini lahir 17 Agustus 1945" }, key: "A", exp: "Kartini lahir 21 April 1879 dan gemar membaca." },
+        { tag: "Tekstual", stimulus: "Cara Membuat Teh Manis: 1) Didihkan air hingga mendidih. 2) Tuangkan air panas ke dalam gelas berisi teh celup. 3) Diamkan 2 menit, angkat teh celup. 4) Tambahkan gula sesuai selera, aduk hingga larut.", q: "19. Urutan yang tepat setelah menuangkan air panas adalah...", opts: { A: "Menambahkan gula langsung", B: "Mendidihkan air lagi", C: "Mendiamkan 2 menit lalu mengangkat teh celup", D: "Meminumnya langsung" }, key: "C", exp: "Setelah dituang, diamkan 2 menit lalu angkat teh celup." },
+        { tag: "Tekstual", stimulus: "Cara Membuat Teh Manis: 1) Didihkan air hingga mendidih. 2) Tuangkan air panas ke dalam gelas berisi teh celup. 3) Diamkan 2 menit, angkat teh celup. 4) Tambahkan gula sesuai selera, aduk hingga larut.", q: "20. Teks tersebut bertujuan untuk...", opts: { A: "Menceritakan pengalaman minum teh", B: "Memberi petunjuk membuat teh manis", C: "Menjelaskan sejarah teh", D: "Mempromosikan gula" }, key: "B", exp: "Teks prosedur bertujuan memberi petunjuk membuat sesuatu." },
+        { tag: "Tekstual", stimulus: "Cara Membuat Teh Manis: Didihkan air hingga mendidih. Tuangkan air panas ke dalam gelas berisi teh celup.", q: "21. Kata kerja imperatif (perintah) pada teks adalah...", opts: { A: "Didihkan, Tuangkan, Tambahkan", B: "Teh, Gula, Gelas", C: "Manis, Panas, Mendidih", D: "Hingga, Sesuai, Lalu" }, key: "A", exp: "Didihkan, tuangkan, tambahkan adalah kata perintah." },
+        { tag: "Tekstual", stimulus: "Banjir terjadi karena air sungai meluap. Hal ini disebabkan oleh curah hujan yang tinggi dan berkurangnya daerah resapan air akibat banyaknya bangunan. Selain itu, sampah yang menumpuk di sungai menghambat aliran air.", q: "22. Penyebab banjir menurut teks adalah...", opts: { A: "Curah hujan tinggi dan berkurangnya daerah resapan air", B: "Banyaknya pohon di hutan", C: "Air sungai yang jernih", D: "Udara yang sejuk" }, key: "A", exp: "Penyebabnya curah hujan tinggi dan berkurangnya daerah resapan." },
+        { tag: "Tekstual", stimulus: "Banjir terjadi karena air sungai meluap. Hal ini disebabkan oleh curah hujan yang tinggi dan berkurangnya daerah resapan air.", q: "23. Ide pokok paragraf tersebut adalah...", opts: { A: "Sampah menumpuk di sungai", B: "Penyebab terjadinya banjir", C: "Curah hujan selalu tinggi", D: "Banyaknya bangunan di kota" }, key: "B", exp: "Ide pokoknya adalah penyebab terjadinya banjir." },
+        { tag: "Tekstual", stimulus: "Banjir terjadi karena air sungai meluap.", q: "24. Kalimat tersebut termasuk pola...", opts: { A: "Sebab - Akibat", B: "Akibat - Sebab", C: "Perbandingan", D: "Pertentangan" }, key: "B", exp: "Banjir (akibat) - karena air meluap (sebab), jadi Akibat - Sebab." },
+        { tag: "Apresiasi", stimulus: "Mentari pagi menyapa lembut. Embun masih menempel di ujung daun. Burung-burung bernyanyi riang menyambut hari.", q: "25. Majas yang terdapat pada 'Burung-burung bernyanyi riang' adalah...", opts: { A: "Hiperbola", B: "Personifikasi", C: "Metafora", D: "Ironi" }, key: "B", exp: "Burung diberi sifat manusia (bernyanyi) = personifikasi." },
+        { tag: "Apresiasi", stimulus: "Mentari pagi menyapa lembut. Embun masih menempel di ujung daun.", q: "26. Suasana yang tergambar dalam teks adalah...", opts: { A: "Menakutkan dan gelap", B: "Tenang dan damai di pagi hari", C: "Sedih dan muram", D: "Ramai dan bising di pasar" }, key: "B", exp: "Suasananya tenang dan damai di pagi hari." },
+        { tag: "Apresiasi", stimulus: "Hatinya sekeras batu karang menghadapi cobaan.", q: "27. Majas pada kalimat tersebut adalah...", opts: { A: "Simile / Perumpamaan", B: "Personifikasi", C: "Hiperbola", D: "Eufemisme" }, key: "A", exp: "Sekeras = perumpamaan / simile." },
+        { tag: "Evaluasi", stimulus: "CIPONGKOR - Siswa SMPN 2 Cipongkor meraih juara 1 lomba pidato tingkat kabupaten pada Sabtu (10/5). Lomba diikuti 20 sekolah. Kepala sekolah menyampaikan rasa bangga atas prestasi tersebut dan berharap siswa terus berlatih.", q: "28. Unsur berita yang ada pada teks adalah...", opts: { A: "Siapa: Siswa SMPN 2 Cipongkor, Apa: Juara 1 lomba pidato, Kapan: Sabtu (10/5)", B: "Mengapa: Karena hujan deras", C: "Siapa: Kepala sekolah saja", D: "Kapan: 17 Agustus" }, key: "A", exp: "Unsur berita: Siapa, Apa, Kapan terpenuhi." },
+        { tag: "Evaluasi", stimulus: "CIPONGKOR - Siswa SMPN 2 Cipongkor meraih juara 1 lomba pidato tingkat kabupaten pada Sabtu (10/5).", q: "29. Judul berita yang tepat adalah...", opts: { A: "Siswa SMPN 2 Cipongkor Juara 1 Lomba Pidato", B: "Hujan Deras di Cipongkor", C: "Cara Membuat Pidato yang Baik", D: "Sejarah SMPN 2 Cipongkor" }, key: "A", exp: "Judul yang sesuai isi berita adalah juara 1 lomba pidato." },
+        { tag: "Evaluasi", stimulus: "Kepala sekolah menyampaikan rasa bangga atas prestasi tersebut dan berharap siswa terus berlatih.", q: "30. Kalimat tersebut mengungkapkan...", opts: { A: "Apresiasi dan harapan", B: "Keluhan dan protes", C: "Larangan dan hukuman", D: "Ajakan untuk berhenti" }, key: "A", exp: "Kalimat itu mengungkapkan apresiasi dan harapan." }
+    ],
+    "7": [
+        { tag: "Analisis", stimulus: "Teks 1: 'Siswa yang rajin membaca memiliki kosakata lebih banyak.' Teks 2: 'Siswa yang jarang membaca kesulitan memahami soal cerita.'", q: "1. Hubungan kedua teks tersebut adalah...", opts: { A: "Bertentangan", B: "Sebab-akibat yang saling mendukung tentang manfaat membaca", C: "Tidak ada hubungan", D: "Membahas topik yang berbeda" }, key: "B", exp: "HOTS: Kedua teks saling mendukung, rajin membaca menyebabkan kosakata banyak, jarang membaca menyebabkan sulit memahami." },
+        { tag: "Evaluasi", stimulus: "Iklan: Minum jus ini 1 kali, langsung langsing dan pintar! Dijamin 100 persen berhasil tanpa olahraga.", q: "2. Alasan paling kuat untuk tidak mempercayai iklan tersebut adalah...", opts: { A: "Warnanya kurang menarik", B: "Klaimnya berlebihan dan tidak masuk akal tanpa bukti", C: "Harganya murah", D: "Iklannya terlalu pendek" }, key: "B", exp: "HOTS: Klaim berlebihan tanpa bukti ilmiah adalah ciri iklan tidak kredibel." },
+        { tag: "Inferensial", stimulus: "Sejak ada perpustakaan keliling, anak-anak di kampung itu berebut meminjam buku. Warung yang dulu ramai anak bermain game, kini sepi.", q: "3. Apa yang dapat disimpulkan dari perubahan tersebut?", opts: { A: "Anak-anak bosan bermain game", B: "Kehadiran buku yang menarik berhasil mengalihkan minat anak dari game", C: "Warung tutup", D: "Anak-anak dipaksa guru" }, key: "B", exp: "HOTS: Perubahan perilaku karena adanya alternatif yang menarik, yaitu buku." },
+        { tag: "Analisis", stimulus: "Dita: Aku belajar sampai larut malam tapi nilai tetap rendah. Raka: Coba ubah caramu, jangan hanya menghafal, tapi pahami konsepnya dan kerjakan latihan soal.", q: "4. Saran Raka menunjukkan bahwa...", opts: { A: "Menghafal saja sudah cukup", B: "Cara belajar yang salah perlu dievaluasi dan diperbaiki, bukan hanya menambah jam belajar", C: "Dita tidak pintar", D: "Belajar malam tidak baik" }, key: "B", exp: "HOTS: Masalahnya bukan waktu, tapi strategi belajar yang harus dievaluasi." },
+        { tag: "Kreasi", stimulus: "Sekolahmu akan membuat poster untuk mengajak siswa hemat air. Kamu diminta membuat kalimat ajakan.", q: "5. Kalimat poster yang paling persuasif adalah...", opts: { A: "Air banyak, pakai saja seenaknya", B: "Hemat air mulai dari kita, setetes air sangat berarti!", C: "Jangan mandi agar hemat air", D: "Air itu tidak penting" }, key: "B", exp: "HOTS: Persuasif, positif, dan sesuai tujuan hemat air." },
+        { tag: "Evaluasi", stimulus: "Berita: Siswa A juara lomba karena rajin latihan setiap hari. Siswa B gagal karena jarang latihan dan sering menunda tugas.", q: "6. Pelajaran yang dapat diambil dari berita tersebut adalah...", opts: { A: "Juara itu karena bakat saja", B: "Kedisiplinan dan konsistensi latihan menentukan hasil", C: "Lomba itu tidak penting", D: "Guru yang menentukan juara" }, key: "B", exp: "HOTS: Membandingkan dua kasus untuk menemukan faktor penentu keberhasilan." },
+        { tag: "Inferensial", stimulus: "Setiap pagi, Pak RT menyapu jalan sendirian. Lama-lama, warga lain merasa malu dan ikut menyapu. Kini jalan kampung selalu bersih.", q: "7. Mengapa warga akhirnya ikut menyapu?", opts: { A: "Karena takut dihukum Pak RT", B: "Karena keteladanan Pak RT menumbuhkan rasa malu dan kesadaran bersama", C: "Karena ada lomba", D: "Karena jalan kotor" }, key: "B", exp: "HOTS: Perubahan karena keteladanan, bukan paksaan." },
+        { tag: "Analisis", stimulus: "Puisi: Langkahku kecil, tapi mimpiku besar. Jatuh bangun sudah biasa, aku tak akan menyerah.", q: "8. Makna tersirat dari puisi tersebut adalah...", opts: { A: "Penyair merasa kecil", B: "Tekad yang kuat untuk meraih cita-cita meski banyak rintangan", C: "Penyair suka jatuh", D: "Penyair tidak punya mimpi" }, key: "B", exp: "HOTS: Harus menafsirkan makna kias, bukan arti harfiah." },
+        { tag: "Evaluasi", stimulus: "Dua pendapat: Pendapat A: HP harus dilarang total di sekolah. Pendapat B: HP boleh dipakai untuk belajar dengan pengawasan guru.", q: "9. Pendapat yang paling bijak dan berimbang adalah...", opts: { A: "Pendapat A, karena HP hanya mengganggu", B: "Pendapat B, karena HP ada manfaat dan risikonya, perlu diatur bukan dilarang total", C: "Keduanya salah", D: "HP harus dibuang" }, key: "B", exp: "HOTS: Menilai dua pendapat dan memilih yang berimbang." },
+        { tag: "Inferensial", stimulus: "Di kelas, Ani selalu membantu temannya yang kesulitan tanpa diminta. Saat ada tugas kelompok, ia membagi tugas secara adil.", q: "10. Jika Ani menjadi ketua kelas, prediksi yang paling tepat adalah...", opts: { A: "Kelas akan kacau", B: "Kelas akan rukun dan tugas terbagi adil karena Ani peduli dan adil", C: "Ani akan marah-marah", D: "Teman-teman akan menjauh" }, key: "B", exp: "HOTS: Memprediksi dari pola karakter yang konsisten." },
+        { tag: "Analisis", stimulus: "Teks: Sampah menumpuk karena warga membuang sampah sembarangan. Akibatnya selokan mampet dan banjir saat hujan.", q: "11. Jika kebiasaan membuang sampah sembarangan dihentikan, apa yang paling mungkin terjadi?", opts: { A: "Banjir semakin parah", B: "Selokan lancar dan banjir berkurang", C: "Sampah semakin banyak", D: "Tidak ada perubahan" }, key: "B", exp: "HOTS: Memahami rantai sebab-akibat dan memprediksi jika sebab dihilangkan." },
+        { tag: "Evaluasi", stimulus: "Seseorang menulis di media sosial: Semua guru di sekolah itu galak dan tidak adil, berdasarkan satu pengalaman buruknya.", q: "12. Kelemahan tulisan tersebut adalah...", opts: { A: "Tulisannya terlalu panjang", B: "Menyamaratakan dari satu pengalaman tanpa bukti menyeluruh", C: "Tidak ada foto", D: "Bahasa terlalu formal" }, key: "B", exp: "HOTS: Generalisasi dari satu contoh adalah kesalahan berpikir." },
+        { tag: "Kreasi", stimulus: "Kamu ingin mengajak teman untuk tidak menyontek saat ujian. Buatlah kalimat ajakan yang tepat.", q: "13. Kalimat ajakan yang paling tepat adalah...", opts: { A: "Ayo contek saja, tidak ketahuan kok", B: "Yuk, kita jujur saat ujian, hasil sendiri lebih membanggakan!", C: "Tidak usah belajar, contek saja", D: "Ujian itu tidak penting" }, key: "B", exp: "HOTS: Ajakan harus positif dan menanamkan nilai kejujuran." },
+        { tag: "Inferensial", stimulus: "Buku di perpustakaan banyak yang rusak sampulnya. Setelah dibuat aturan denda dan sosialisasi cara merawat buku, kerusakan berkurang drastis.", q: "14. Faktor yang paling berperan mengurangi kerusakan buku adalah...", opts: { A: "Buku baru dibeli", B: "Adanya aturan yang jelas dan kesadaran merawat buku", C: "Perpustakaan diperbesar", D: "Siswa takut masuk perpustakaan" }, key: "B", exp: "HOTS: Menemukan faktor penyebab dari perubahan yang terjadi." },
+        { tag: "Analisis", stimulus: "Cerita: Budi menemukan dompet di jalan. Ia bingung, karena ia sedang butuh uang. Akhirnya ia mencari pemiliknya dan mengembalikannya.", q: "15. Konflik batin yang dialami Budi adalah...", opts: { A: "Antara kebutuhan uang dan kejujuran", B: "Antara lapar dan kenyang", C: "Antara sekolah dan bermain", D: "Antara Budi dan temannya" }, key: "A", exp: "HOTS: Harus mengidentifikasi konflik batin, bukan konflik fisik." },
+        { tag: "Evaluasi", stimulus: "Teks prosedur membuat teh: Didihkan air, tuang ke gelas, masukkan teh celup, tambahkan gula. Seseorang langsung menambahkan gula sebelum air mendidih.", q: "16. Apa akibat jika langkah tidak sesuai urutan?", opts: { A: "Tidak ada akibat", B: "Hasil tidak maksimal dan langkah menjadi tidak efektif", C: "Teh menjadi lebih enak", D: "Gula menjadi lebih manis" }, key: "B", exp: "HOTS: Menilai pentingnya urutan dalam teks prosedur." },
+        { tag: "Inferensial", stimulus: "Desa A memiliki banyak pohon dan udara sejuk. Desa B banyak pabrik, pohon ditebang, udara panas dan berdebu.", q: "17. Simpulan yang tepat dari perbandingan kedua desa adalah...", opts: { A: "Desa B lebih baik", B: "Keberadaan pohon berpengaruh besar pada kualitas udara dan kenyamanan lingkungan", C: "Pabrik tidak berpengaruh", D: "Desa A tidak punya pabrik karena miskin" }, key: "B", exp: "HOTS: Membandingkan dua kasus untuk menyimpulkan hubungan pohon dan udara." },
+        { tag: "Apresiasi", stimulus: "Kalimat: Hatinya seluas samudra, selalu memaafkan kesalahan orang lain.", q: "18. Majas dan nilai yang terkandung adalah...", opts: { A: "Hiperbola, nilai kesombongan", B: "Simile, nilai pemaaf dan berhati besar", C: "Ironi, nilai kemarahan", D: "Personifikasi, nilai ketakutan" }, key: "B", exp: "HOTS: Harus mengaitkan majas perumpamaan dengan nilai karakter." },
+        { tag: "Evaluasi", stimulus: "Seorang siswa berkata: Saya tidak perlu belajar Bahasa Indonesia karena sudah bisa berbahasa Indonesia sehari-hari.", q: "19. Tanggapan paling tepat untuk pendapat tersebut adalah...", opts: { A: "Benar, tidak perlu belajar", B: "Kurang tepat, karena belajar Bahasa Indonesia bukan hanya berbicara, tapi juga menulis, memahami teks, dan berpikir kritis", C: "Benar, karena ujian tidak penting", D: "Salah, karena Bahasa Indonesia sulit" }, key: "B", exp: "HOTS: Menilai pendapat dengan argumen yang berdasar." },
+        { tag: "Analisis", stimulus: "Grafik menunjukkan jumlah siswa yang membaca buku naik dari 20 menjadi 80 setelah ada pojok baca di tiap kelas.", q: "20. Faktor yang paling mungkin menyebabkan kenaikan tersebut adalah...", opts: { A: "Buku menjadi lebih mahal", B: "Akses buku menjadi lebih dekat dan mudah dijangkau siswa", C: "Siswa dipaksa membaca", D: "Perpustakaan ditutup" }, key: "B", exp: "HOTS: Menafsirkan data grafik dan menghubungkan dengan penyebabnya." },
+        { tag: "Inferensial", stimulus: "Setiap kali ada ulangan, Sinta belajar dengan membuat peta konsep dan berlatih soal. Temannya hanya membaca ulang catatan sekali.", q: "21. Mengapa cara Sinta lebih efektif?", opts: { A: "Karena Sinta lebih pintar", B: "Karena Sinta aktif mengolah informasi, bukan hanya membaca pasif", C: "Karena Sinta punya banyak buku", D: "Karena Sinta belajar lama" }, key: "B", exp: "HOTS: Membedakan belajar aktif dan pasif." },
+        { tag: "Kreasi", stimulus: "Kamu diminta membuat judul untuk teks tentang pentingnya menjaga kebersihan sungai di Cipongkor.", q: "22. Judul yang paling menarik dan sesuai adalah...", opts: { A: "Sungai yang Kotor", B: "Selamatkan Sungai Kita, Selamatkan Masa Depan Cipongkor!", C: "Saya Suka Sungai", D: "Cara Membuang Sampah" }, key: "B", exp: "HOTS: Judul harus menarik, mengajak, dan sesuai isi." },
+        { tag: "Evaluasi", stimulus: "Dua siswa berdebat: A: Mencontek itu wajar asal tidak ketahuan. B: Mencontek itu merugikan diri sendiri karena tidak belajar sungguh-sungguh.", q: "23. Pendapat yang dapat dipertahankan adalah...", opts: { A: "Pendapat A, karena tidak ketahuan", B: "Pendapat B, karena kejujuran dan proses belajar lebih penting dari nilai sesaat", C: "Keduanya benar", D: "Keduanya salah" }, key: "B", exp: "HOTS: Menilai pendapat berdasarkan nilai, bukan hasil sesaat." },
+        { tag: "Inferensial", stimulus: "Di sekolah, siswa yang rajin piket selalu datang tepat waktu. Siswa yang jarang piket sering terlambat.", q: "24. Apa hubungan antara kebiasaan piket dan kedisiplinan?", opts: { A: "Tidak ada hubungan", B: "Kebiasaan tanggung jawab kecil melatih kedisiplinan waktu", C: "Piket membuat siswa lelah", D: "Terlambat karena piket" }, key: "B", exp: "HOTS: Menemukan hubungan tersembunyi antara kebiasaan dan karakter." },
+        { tag: "Analisis", stimulus: "Teks: Pemerintah membangun jalan baru. Warga senang karena perjalanan lebih cepat. Namun, beberapa sawah harus digusur.", q: "25. Dampak pembangunan tersebut adalah...", opts: { A: "Hanya dampak positif", B: "Hanya dampak negatif", C: "Ada dampak positif (akses cepat) dan dampak negatif (sawah berkurang)", D: "Tidak ada dampak" }, key: "C", exp: "HOTS: Mampu melihat dua sisi dari satu peristiwa." },
+        { tag: "Evaluasi", stimulus: "Seseorang membagikan berita di grup WA tanpa mengecek kebenarannya. Ternyata berita itu hoaks.", q: "26. Sikap yang seharusnya dilakukan sebelum membagikan berita adalah...", opts: { A: "Langsung bagikan agar cepat viral", B: "Cek kebenaran dari sumber terpercaya sebelum membagikan", C: "Tambahkan komentar yang menghina", D: "Bagikan ke semua grup" }, key: "B", exp: "HOTS: Literasi digital - saring sebelum sharing." },
+        { tag: "Apresiasi", stimulus: "Cerpen: Kakek itu duduk di beranda, menatap senja. Senyumnya tenang, seolah semua badai telah berlalu.", q: "27. Suasana dan pesan yang dibangun pengarang adalah...", opts: { A: "Menakutkan dan sedih", B: "Damai dan penuh syukur setelah melewati masa sulit", C: "Marah dan kecewa", D: "Bosan dan malas" }, key: "B", exp: "HOTS: Menafsirkan suasana dari simbol senja dan senyum tenang." },
+        { tag: "Inferensial", stimulus: "Anak-anak yang sering diberi kesempatan berpendapat di kelas menjadi lebih percaya diri saat presentasi.", q: "28. Apa yang dapat disarankan kepada guru dari temuan tersebut?", opts: { A: "Jangan beri kesempatan berpendapat", B: "Beri lebih banyak kesempatan berpendapat agar percaya diri siswa tumbuh", C: "Hanya siswa pintar yang boleh berpendapat", D: "Presentasi dihapuskan" }, key: "B", exp: "HOTS: Memberi saran berdasarkan temuan, bukan opini kosong." },
+        { tag: "Kreasi", stimulus: "Kamu akan menulis pidato tentang menjaga lingkungan sekolah.", q: "29. Bagian pembuka yang paling menarik adalah...", opts: { A: "Selamat pagi, saya akan pidato", B: "Pernahkah kalian membayangkan sekolah kita tanpa satu pun pohon? Panas, gersang, dan tak nyaman!", C: "Lingkungan itu penting", D: "Saya tidak tahu harus ngomong apa" }, key: "B", exp: "HOTS: Pembuka harus memancing rasa ingin tahu dan imajinasi pendengar." },
+        { tag: "Evaluasi", stimulus: "Seorang siswa mendapat nilai rendah. Ia menyalahkan guru, teman, dan soal yang sulit. Ia tidak pernah mengevaluasi cara belajarnya.", q: "30. Sikap siswa tersebut yang perlu diperbaiki adalah...", opts: { A: "Cara menyalahkan orang lain, seharusnya introspeksi dan evaluasi diri", B: "Nilai yang rendah", C: "Soal yang sulit", D: "Guru yang galak" }, key: "A", exp: "HOTS: Menilai sikap menyalahkan orang lain dan pentingnya introspeksi." }
+    ],
+};
+
+let activePaket = "1";
+// DATA NAMA 203 SISWA KELAS 9 - DITEMPEL LANGSUNG
+const dataSiswaTKA = {
+"9A": ["ABDUL AZIZ","ABDUL HADI KHOIRUL MUKTI","ADELIA RAISYA","AL QAUTSAR PUTRA PRATAMA","ALISYA FEBRIYANTI","ANGGIE ARINDI AGNIA RESMISARI","AURA AULIA SARINUR PATIMAH","DAUD ROHMAN GOZALI","DIANDRA HERDIANSYAH","DINDA NIRMALA","FAZRI NAZRULLAH","GITA ELA RATNA SARI","KESHA SYAHADA AULYA","M RIDO PERMANA HIDAYAT","M. IKBAL MAOLANA","M.ABDUL PARID","MUHAMAD GUNTUR","MUHAMAD RIDHO APALAH","MUHAMMAD FIKRI PADILLAH RAMADANI","MUHAMMAD RAPKA RIPAI","NATASYA ANANDA PUTRI","NAUFAL KAMIL","NENG SITI NURPADILLAH","PARIDA ZAHIRA","RAISSA KAMILA","RIFA NAZYYA AULIA","SAEPULOH","SANDRA PUSPITA SARI NUR HIDAYAT","SINDI SRI RAHAYU","SITI NURSIPA ALAWIAH","SITI ZAHWA AGUSTIN","SYAHIRA ADIPANAZWA","SYEHAN PERMANA","YESIANI PITRIANI"],
+"9B": ["AI WIDIYA NENGSIH","ALIYA NADIRA","ALIYA ZIRAN RINZIANI","ANISA PUTRI FIRDAUS","ANUGRAH SYAHYANA","APRILIA PUTRI PUSPITA","ARIEF SAID RIDWAN","AZIZAH APRIYANI","DENDI MAULANA A.Z","DIAZ ALVIANSAH","ELIA AZ ZAHRA","GITA SAPUTRI","INTAN NURZIFANA","LISTIA HANDAYANI","M GIBRAN REYNAL PRADIPTA","M RIZKI SAPUTRA","M. KAISAR FIRDAUS","MOHAMAD ZIBRAN MAHARDIKA","MUHAMAD ALRDI ALPARIZKI","MUHAMAD HAMZAH","MUHAMAD RIPANDI","MUHAMMAD HAIKAL MAULANA","MUHAMMAD REHAN NUGRAHA","NAYLA NATALIA","NAZHAR HAIKAL KAMIL","NENSY ELITA SEPTIA","RESA AULIA APRILIANI","SAHRUL NASRULLOH","SAPURA DESIYANTI","SEPTI NURBAROKATUL HIKMAH","SIPA NURHAYATI","SYAHLA ANASTASYA","YUNITA AYU ASTUTI","YUSUV RIYANSAH"],
+"9C": ["AHMAD FAUZI ALWI","AISYAH WULANDARI","ALIFA HALIDA NADIANTI","APRILIA ZAHRA.R","ARIF YUDA","AZKIA NUR PADILAH","DENDY RIFALDI AFRIANSYAH","DIKA MAULANA","HAIKAL ARFA","HANNAN AYU RIANTI","KAMILA ELIANTO","M. ALWI KHOIRUDIN ABDUL MALIK","M. MAULANA SIDIQ PERMANA","M.PARHAN  MAULANA IBRA","MUHAMAD ABDUL LATIP","MUHAMAD ANDRE SOPIAN","MUHAMAD IJAM","MUHAMAD YUSUP HAIKAL","MUHAMMAD HAIKAL RADISTA PRATAMA","MUHAMMAD RIFA'I AL LAISY","NAZIEL FAJAR JUANSYAH","NAZWA SAFA'AH ASYIFA KOLBI","NIDA AULIA","PUTRI S JAMILAH","RAZKI NURSAMSI","RESA PUTRI","RIPA NUR RIYANTI","SANJA IRAWAN","SITI ALPINA","SITI RAAISYAH PUTRI AGUSTIN","SOLIHAT BALQIS MATIN","SYIFA RAHAYU NINGSIH","ZIYA RAJNI A AZIZ"],
+"9D": ["ANDINI PUTRI YUDISTIANA","AQILA NUR ASIFA","ARYA SAPUTRA SETIAWAN","BERLIAN SRI REFLIANTI","CITRA MEIDA SALKA","DENIS SETIAWAN","DERI ABDUL RAHMAT","DIPA ALPARIJI","EUIS KARLINA","EUIS KARTINI","HARSYA AHMAD JAYADI","HILMI NADYA","KAMILA MUSLIHAT","M NANDI HOPIPAN","M. DAPI","M. NOPAL ALPARISKI","MUHAMAD BAYAN ABDILAH","MUHAMAD MIFTAH MAULANA","MUHAMAD ZAYUDI MAULANA","MUHAMMAD IHSAN FAUJI","MUHAMMAD SYAHRUL ARIFIN","NABILA BILQIS","NENG DINDA APRILIA NUR AZIZAH","NIRVANA NAOMI ALINDA","NUR JAMIL HIDAYATULLOH","QHULAYDHA ALYA BASSMA","REVI OKTAVIANI","RUNIA AURELLA","SATRIO","SHEPA NURFADILA","SITI MARWAH","SITI RUBIATUL ADAWIAH","TIARA HERLINA PUTRI","ZAKY NAJIB"],
+"9E": ["AIDIL MUHAMMAD AZKHA","ALIFA NURMAYANTI APRILIA","AN'GAM SYAQILA WIJAYA","ASIMA DWI CAHYANI","BAGAS SAPUTRA","DELIA KHAIRUNNIZAR","DHIYAIZ ZAFAR BRAGAS","FADIL MUHAMAD ILHAM","FAISAL SETIANJI","GINA IMANIAR RAMADANI","HUSNA AULIA","ILHAM AKBAR","KARTINA","M RAFA FADHILA AKBAR","M. RAZA MAHESA AL-FIAN","M. SAEPUL JAMIL","MOCH ZIKRI PRATAMA HAKIM","MUHAMAD DAFFA MAULANA","MUHAMMAD ASKA MAULANA IBRAHIM","MUHAMMAD LUTHFI ANUGRAH","MURTADO","NABILA NURHIKMAH","NUR SEPTI AMELIA","RADHIKA PRATAMA W G","REZAN MAULIDA ZAHROTUNNISA","RIZKI ADITIA","SALSA NURPADILAH","SAWAL PUTRA NURIPKI","SIFA ANGGRAENI","SITI MISHA KHOERUNISA","SITI SARAH HANDAYANI","SRI NUR INDAH PUJI LESTARI","YASTI AMELIA","ZULFA NURPADILAH","AHMAD WILDAN MAULANA"],
+"9F": ["AGNIA NADA SHABIRA","DZIKRA KAISAR NURFADILAH","HUZAIMAH SEPTIANI F","KARTINI","LUQMANUL HAKIM","M RESTU SINGGIH","M. GUMBIRA ZULFIKAR","M. SALMAN FADILA","M.PAISAL","MUHAMAD REZA FAUZI","MUHAMAD RIJAL ADRIAN","MUHAMMAD BAGAS SAPUTRA","MUHAMMAD RAFFA ABDILLAH","NAJKA HOERUNISA","NASIR M PADILAH","NENG SITI ALNA SALSABILA","NIZAM RASYA HAIKAL","P.U. SULISTYOWATI","RAISA SALSABILA","RAMADAN SAPUTRA","RAYISAH ALFUJIYANUR ISLAMI","REZHA SEPTIANINGRUM","RIZKY MAULANA","SALWA ANGGRAENI","SANIA NURPADILAH MUSTAQIM","SILPA NUR RAHAYU","SITI NURAHMAH","SITI SIFA P","SRI WULAN SARI","SUKMA ALI PURKON","SYAZID KAMALUDIN","YELSI SALFHA AULIA","MUHAMAD RIJAL"]
+};
+let siswaTerpilihTKA = null;
+function resetNamaTKA(){document.getElementById('namaSiswa').value='';document.getElementById('saranTKA').style.display='none';siswaTerpilihTKA=null;}
+function cariSiswaTKA(){const kata=document.getElementById('namaSiswa').value.toUpperCase().trim();const kelasPilih=document.getElementById('kelasSiswa').value;const box=document.getElementById('saranTKA');if(!kelasPilih){alert('Pilih kelas dulu ya!');document.getElementById('namaSiswa').value='';return;}if(kata.length<2){box.style.display='none';return;}let hasil=(dataSiswaTKA[kelasPilih]||[]).filter(n=>n.includes(kata)).slice(0,10);if(hasil.length===0){box.innerHTML='<div style="padding:10px">Tidak ditemukan.</div>';box.style.display='block';return;}box.innerHTML=hasil.map(n=>`<div onclick="pilihSiswaTKA('${n.replace(/'/g,"\\'")}')" style="padding:10px 12px;cursor:pointer;border-bottom:1px solid #f1f5f9"><b>${n}</b> - Kelas ${kelasPilih}</div>`).join('');box.style.display='block';}
+function pilihSiswaTKA(nama){document.getElementById('namaSiswa').value=nama;document.getElementById('saranTKA').style.display='none';siswaTerpilihTKA=nama;}
+function mulaiUjian() {
+    let namaInput = document.getElementById('namaSiswa');
+    let kelasInput = document.getElementById('kelasSiswa');
+    let selectPaket = document.getElementById('pilihPaket');
+
+    if(!namaInput || !kelasInput || !selectPaket) {
+        alert("Terjadi kesalahan sistem elemen. Silakan muat ulang halaman.");
+        return;
+    }
+
+    let nama = namaInput.value.trim();
+    let kelas = kelasInput.value.trim();
+    activePaket = selectPaket.value;
+
+    if(nama === "" || kelas === "") {
+        alert("Mohon masukkan Nama Lengkap dan Kelas terlebih dahulu!");
+        return;
+    }
+
+    let namaPaketText = selectPaket.options[selectPaket.selectedIndex].text;
+    document.getElementById('displayInfo').innerHTML = `Siswa: <b>${nama}</b> (Kelas: ${kelas}) | <b>${namaPaketText}</b>`;
+    document.getElementById('loginSection').classList.add('hidden');
+    document.getElementById('quizSection').classList.remove('hidden');
+
+    renderSoal(activePaket);
+    window.scrollTo(0, 0);
+}
+
+function keluarKeMenu() {
+    document.getElementById('quizSection').classList.add('hidden');
+    document.getElementById('loginSection').classList.remove('hidden');
+    document.getElementById('result').style.display = 'none';
+}
+
+function renderSoal(paketId) {
+    let soalList = bankSoal[paketId];
+    let html = "";
+
+    soalList.forEach((item, index) => {
+        let num = index + 1;
+        let badgeHtml = item.tag ? `<div class="badge-kognitif">${item.tag}</div><br>` : "";
+        let stimulusHtml = item.stimulus ? `<div class="text-stimulus">${item.stimulus}</div>` : "";
+        
+        html += `<div class="question-box" id="box${num}">
+            ${badgeHtml}
+            ${stimulusHtml}
+            <div class="question">${item.q}</div>
+            <div class="options">`;
+        
+        for(let key in item.opts) {
+            html += `<label id="lbl${num}_${key}"><input type="radio" name="q${num}" value="${key}"> ${key}. ${item.opts[key]}</label>`;
+        }
+
+        html += `</div>
+            <div class="explanation" id="exp${num}"><b>Pembahasan:</b> ${item.exp}</div>
+        </div>`;
+    });
+
+    document.getElementById('containerSoal').innerHTML = html;
+    document.getElementById('result').style.display = 'none';
+}
+
+function checkAndSendWA() {
+    let globalNama = document.getElementById('namaSiswa').value.trim();
+    let globalKelas = document.getElementById('kelasSiswa').value.trim();
+    let soalList = bankSoal[activePaket];
+    let globalTotal = soalList.length;
+    let globalScore = 0;
+
+    for(let i=1; i<=globalTotal; i++) {
+        let q = document.querySelector('input[name="q'+i+'"]:checked');
+        if(!q) {
+            alert(`Harap jawab semua ${globalTotal} soal pada paket ini terlebih dahulu! (Ada soal nomor ${i} yang belum dijawab)`);
+            return;
+        }
+    }
+
+    for(let i=0; i<globalTotal; i++) {
+        let num = i + 1;
+        let selected = document.querySelector('input[name="q'+num+'"]:checked').value;
+        let correctKey = soalList[i].key;
+
+        document.getElementById('exp'+num).style.display = 'block';
+
+        let selectedLabel = document.getElementById('lbl'+num+'_'+selected);
+        let correctLabel = document.getElementById('lbl'+num+'_'+correctKey);
+
+        if(selected === correctKey) {
+            globalScore++;
+            selectedLabel.classList.add('user-correct');
+        } else {
+            selectedLabel.classList.add('user-wrong');
+            correctLabel.classList.add('user-correct');
+        }
+    }
+
+    let resultDiv = document.getElementById('result');
+    resultDiv.style.display = 'block';
+
+    let percentage = (globalScore / globalTotal) * 100;
+    if(percentage >= 80) {
+        resultDiv.className = "correct-score";
+        resultDiv.innerHTML = `Hebat! Skor Anda: ${globalScore} dari ${globalTotal} (${percentage.toFixed(1)}%). Pesan WhatsApp akan otomatis terbuka!`;
+    } else {
+        resultDiv.className = "incorrect-score";
+        resultDiv.innerHTML = `Skor Anda: ${globalScore} dari ${globalTotal} (${percentage.toFixed(1)}%). Pesan WhatsApp akan otomatis terbuka!`;
+    }
+
+    window.scrollTo(0, document.body.scrollHeight);
+
+    setTimeout(function() {
+        let nomorWa = "6283822993789";
+        let selectPaket = document.getElementById('pilihPaket');
+        let paketNama = selectPaket.options[selectPaket.selectedIndex].text;
+        let pesan = `Halo Pak Guru, saya sudah selesai mengerjakan latihan TKA.%0A%0A` +
+                    `Nama: *${globalNama}*%0A` +
+                    `Kelas: *${globalKelas}*%0A` +
+                    `Pilihan: *${paketNama}*%0A` +
+                    `Skor Hasil: *${globalScore} dari ${globalTotal} (${percentage.toFixed(1)}%)*`;
+
+        let urlWA = `https://wa.me/${nomorWa}?text=${pesan}`;
+        window.open(urlWA, '_blank');
+    }, 1000);
+}
+</script>
+
+</body>
+</html>
